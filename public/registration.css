@@ -1,0 +1,99 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Container for left and right sections */
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Left Section */
+.left-section {
+    width: 50%;
+    background-color: #f0f0f0; /* Light background */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.left-section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.left-section p {
+    font-size: 1.2rem;
+}
+
+/* Right Section - Registration Form */
+.right-section {
+    width: 50%;
+    background-color: #ffffff; /* White background for form */
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 400px; /* Limit form width */
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+button:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.register-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+
+.login-btn,
+.admin-login-btn {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    margin-top: 10px;
+}
+
+a {
+    color: #007BFF;
+    text-decoration: none;
+}

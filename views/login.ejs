@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog App Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="left_side">
+            <h1>Welcome to XBlog</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia optio culpa illo rerum amet delectus perferendis, molestias blanditiis quibusdam. Earum, quae magni inventore quidem illum repudiandae dolores itaque modi laborum. Blanditiis perspiciatis neque libero ducimus.</p>
+        </div>
+
+        <div class="right_side">
+            <h2>Login Here</h2>
+            <form action="" method="POST">
+                <input type="text" id="username" placeholder="Username/E-mail/password" name="username" required>
+                <input type="password" id="password" placeholder="Password" name="pass" required>
+                <a href="#">Forgot Password?</a>
+                <div class="btn_container">
+                    <button type="submit" class="btn btn_login">Login</button>
+                    <button type="button" class="btn btn_register" onClick="window.location.replace('/registration')">Register</button>
+                </div>
+                <button type="button" class="btn btn_admin" style="margin-top: 10px;">Admin Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

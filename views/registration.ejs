@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="registration.css"> <!-- Add your CSS here -->
+    <script>
+        // JavaScript to check if passwords match
+        function validatePassword() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const errorMessage = document.getElementById('password-error');
+
+            if (password !== confirmPassword) {
+                errorMessage.textContent = "Passwords do not match!";
+                document.getElementById('submit-btn').disabled = true;
+            } else {
+                errorMessage.textContent = "";
+                document.getElementById('submit-btn').disabled = false;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Section -->
+        <div class="left-section">
+            <h1>Welcome to Our Website</h1>
+            <p>Explore our platform and enjoy amazing services. Join us now!</p>
+        </div>
+
+        <!-- Right Section (Registration Form) -->
+        <div class="right-section">
+            <div class="form-container">
+                <h2>Register</h2>
+                <form action="/registration" method="POST" onsubmit="return validatePassword()">
+                    <div class="form-group">
+                        <label for="userName">Username</label>
+                        <input type="text" id="userName" name="userName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required oninput="validatePassword()">
+                        <span id="password-error" style="color: red;"></span> <!-- Error message for passwords mismatch -->
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNo">Phone No</label>
+                        <input type="tel" id="phoneNo" name="phoneNo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="terms">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            I agree to the <a href="/terms">Terms and Conditions</a>
+                        </label>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" id="submit-btn" class="register-btn">Register</button>
+                        <button type="button" class="login-btn" onclick="window.location.href='/login'">Login</button>
+                        <button type="button" class="admin-login-btn" onclick="window.location.href='/admin-login'">Admin Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
