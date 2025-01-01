@@ -1,10 +1,26 @@
-{
-  "1735497947556": {
-    "id": 1735497947556,
-    "name": "Anil Kumar",
+[
+  {
+    "id": 1735716725656,
+    "name": "hjhjfghjghj",
+    "email": "dsfsddfsgdfgd@gmail.com",
+    "password": "Akash@2000",
+    "phoneNo": "5674513481",
+    "isLogin": false
+  },
+  {
+    "id": 1735716766844,
+    "name": "Akash Tiwari",
+    "email": "vdfsfsd@gmail.com",
+    "password": "Akash@2000",
+    "phoneNo": "1234433122",
+    "isLogin": false
+  },
+  {
+    "id": 1735731576326,
+    "name": "Akash Tiwari",
     "email": "akash31902@gmail.com",
-    "password": "1234",
-    "phoneNo": "01234567890",
+    "password": "Akash@2000",
+    "phoneNo": "9451183398",
     "isLogin": false
   }
-}
+]
