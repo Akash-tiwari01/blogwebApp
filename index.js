@@ -1,34 +1,69 @@
-const express = require('express')
+const express = require('express');
 const path = require('path')
-const fs = require('fs')
-require('dotenv').config({path:"./process.env"})
-
+const fs = require('fs');
+const session = require('express-session');
+require('dotenv').config({path:"./process.env"});
 const app = express();
-app.set("view engine", "ejs")
-app.use(express.urlencoded({extended:false}))
-app.use(express.json())
-app.use(express.static('public'))
 
-const file = process.env.DATA_FILE
+//middleware
+app.set("view engine", "ejs");
+app.use(express.urlencoded({extended:false}));
+app.use(express.json());
+app.use(express.static('public'));
 
-const readData = ()=>{
+// Session configuration
+app.use(session({
+    secret: 'your-secret-key', // Replace with a strong, random string
+    resave: false, // Avoid resaving session if unchanged
+    saveUninitialized: false, // Don't save empty sessions
+    cookie: { maxAge: 3600000 } // Set session lifetime (10 minutes in ms)
+}));
+
+
+
+const userFile = process.env.DATA_FILE;
+const blogFile = process.env.BLOG_FILE;
+
+const readUserData = ()=>{
     try{
-         return JSON.parse(fs.readFileSync(file,'utf-8'))
+         return JSON.parse(fs.readFileSync(userFile,'utf-8'))
     }catch(err)
     {
-        console.log(`Error in Reading Data ${err}`);
+        console.log(`Error in Reading user Data ${err}`);
         return []
     }
 }
 
-const writeData = (data)=>{
+const writeUserData = (data)=>{
     
     try{
-        fs.writeFileSync(file,JSON.stringify(data,null,2),"utf-8",)
+        fs.writeFileSync(userFile,JSON.stringify(data,null,2),"utf-8",)
         return true;
     }catch(err)
     {
-        console.log(`Error in Writing Data ${err}`);
+        console.log(`Error in Writing user Data ${err}`);
+        return false;
+    }
+}
+
+const readBlogData = ()=>{
+    try{
+        return JSON.parse(fs.readFileSync(blogFile,'utf-8'))
+   }catch(err)
+   {
+       console.log(`Error in Reading Blog Data ${err}`);
+       return []
+   }
+}
+
+const writeBlogData = (data)=>{
+    
+    try{
+        fs.writeFileSync(blogFile,JSON.stringify(data,null,2),"utf-8",)
+        return true;
+    }catch(err)
+    {
+        console.log(`Error in Writing Blog Data ${err}`);
         return false;
     }
 }
@@ -39,17 +74,26 @@ const authenticate = (user,users)=>{
    {
     return true;
    }
-   return false
+   return false;
    
 }
-
+ 
 app.get('/',(req,res)=>{
-    const user = {islogin:false}
-    res.render("index",{user:user||{}})
-})
+    const user = req.session.user || false;
+    if(user){    
+        const blogs = readBlogData();
+        const users = readUserData();
+        res.render("index.ejs",{user:user,blogs:blogs,users:users});
+    }
+    else{
+        res.render('login')
+    }
+    
+
+});
 
 app.get("/login",(req,res)=>{
-    res.render("login")
+    res.render("login");
 })
 
 app.get("/registration",(req,res)=>{
@@ -58,14 +102,14 @@ app.get("/registration",(req,res)=>{
 
 app.post('/registration',(req,res)=>{
 
-    const users = readData()
+    const users = readUserData()
     const id = Date.now()
     const {name,email,password,phoneNo} = req.body;
     const isAuth = authenticate({email:email,phoneNo:phoneNo},users)
     if(isAuth)
     {
-        users.push({id:id,name:name,email:email,password:password,phoneNo:phoneNo,isLogin:false});
-        const success = writeData(users);
+        users.push({id:id,name:name,email:email,password:password,phoneNo:phoneNo});
+        const success = writeUserData(users);
         if(success)
         {
             res.render("welcome",{name:name});
@@ -82,20 +126,37 @@ app.post('/registration',(req,res)=>{
 
 app.post('/login',(req,res)=>{
     const {email,password} = req.body;
-    const user  = readData().filter((element)=>(element.email === email));
-    console.log(req.body);
-    console.log(user);
+    const users = readUserData()
+    const user = users.filter((element)=>(element.email === email));
+    // console.log(req.body);
+    // console.log(user);
 
-    if(user[0].password === password && user.length)
+    if(user.length && user[0].password === password)
     {
-        
-        user[0].isLogin = true;
-        console.log(user);
-        res.render(`index`,{user:user[0]});
+        req.session.user = {...user, isLogin:true};
+        res.redirect('/user')
     }
     else
-    res.send('<script>alert("Wrong Email Id or Password");window.location.replace("/login");</script>')
+    res.send('<script>alert("Wrong Email Id or Password");window.location.replace("/login");</script>');
 
+})
+
+app.get(`/user`,(req,res)=>{
+    const user = req.session.user||false;
+    if( user && user.isLogin)
+    {
+        const blogs = readBlogData();
+        const users = readUserData();
+        res.render("index.ejs", { user, blogs, users });
+    } else {
+        res.redirect('/login'); // Redirect to login if not authenticated
+    }
+})
+
+app.get('/create-blog',(req,res)=>{
+    const user = req.session.user
+    // console.log(user);
+    res.render('newBlog', {user})
 })
 
 

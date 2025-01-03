@@ -1,20 +1,66 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    
+    <title>Blogging Platform</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <%if(!(user && user.isLogin)){%>
-        <script>
-             //redirect to login page  
-             window.location.replace("/login")
-        </script>
-       
-   <% }%>
-   <h1>Welcome Back <%=user.name%></h1> 
-    
+<body> 
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-left">
+                <h1>Blogging Platform</h1>
+            </div>
+            <div class="header-middle">
+                <input type="text" placeholder="Search blogs..." id="search-bar">
+            </div>
+            <div class="header-right">
+                <a href="/create-blog" class="btn">Create New +</a>
+                <span class="user-name"><%= user.username %></span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Middle Section -->
+            <section class="blogs-section">
+                <div class="blogs">
+                    <%if(blogs.length){
+                         blogs.forEach(blog => { %>
+                        <div class="blog-card">
+                            <h2><%= blog.title %></h2>
+                            <p><%= blog.content.substring(0, 200) %>...</p>
+                            <p><strong>Author:</strong> <%= blog.author %></p>
+                            <% if (blog.authorId === user.id) { %>
+                                <a href="/edit-blog/<%= blog.id %>" class="edit-btn">Edit</a>
+                            <% } %>
+                        </div>
+                    <% })} else { %>
+                        <h1>We Have No blogs Posted yet</h1>
+                        <% } %>
+                </div>
+            </section>
+
+            <!-- Right Sidebar -->
+            <aside class="sidebar">
+                <h3>Follow Suggestions</h3>
+                <ul>
+                    <% users.forEach(u => { %>
+                        <% if (u.id !== user.id) { %>
+                            <li>
+                                <span><%= u.name %></span>
+                                <button class="follow-btn">Follow</button>
+                            </li>
+                        <% } %>
+                    <% }) %>
+                </ul>
+            </aside>
+        </main>
+    </div>
 </body>
 </html>
