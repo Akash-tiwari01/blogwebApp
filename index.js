@@ -133,7 +133,7 @@ app.post('/login',(req,res)=>{
 
     if(user.length && user[0].password === password)
     {
-        req.session.user = {...user, isLogin:true};
+        req.session.user = {...user};
         res.redirect('/user')
     }
     else
@@ -143,23 +143,38 @@ app.post('/login',(req,res)=>{
 
 app.get(`/user`,(req,res)=>{
     const user = req.session.user||false;
-    if( user && user.isLogin)
+    if( user )
     {
         const blogs = readBlogData();
         const users = readUserData();
         res.render("index.ejs", { user, blogs, users });
     } else {
-        res.redirect('/login'); // Redirect to login if not authenticated
+        res.render('login'); // Redirect to login if not authenticated
     }
 })
 
 app.get('/create-blog',(req,res)=>{
     const user = req.session.user
-    // console.log(user);
-    res.render('newBlog', {user})
+    console.log(user);
+    if(user)
+    res.render('newBlog', {user});
+    else
+    res.render('login')
 })
 
+app.post('/create-blog',()=>{
 
+})
+
+app.get('/logout',(req,res)=>{
+    req.session.destroy((err)=>{
+        if(err)
+        res.session(500).send('Error Destroying Session');
+        // clearing cookie
+        res.clearCookie('connect.sid'); // 'connect.sid' is default cookie name for Express Session
+        res.render('login');
+    });
+});
 const port = process.env.PORT
 app.listen(port,()=>{
     console.log(`Server is running on http://localhost:${port}`);
