@@ -5,5 +5,12 @@
     "email": "anil123@gmail.com",
     "password": "Anil@123",
     "phoneNo": "1234567890"
+  },
+  {
+    "id": 1736318694367,
+    "name": "Akash Tiwari",
+    "email": "aka@gmail.com",
+    "password": "$2b$10$BGt4u4Dpdc27kHgWBECmNuZGtTGb13uIafaUa3UAToFqvxj.sHdaa",
+    "phoneNo": "9451183398"
   }
 ]
